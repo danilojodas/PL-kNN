@@ -11,10 +11,29 @@ Please, check the **example.py** file to see a simple example of how to use our 
 
 If you want to use it in your source code, you have to set the PYTHONPATH variable to point to the folder where you cloned this repository. If you clone to **/home/user/PL-kNN**, you have to set the PYTHONPATH as follows:
 
-**export PYTHONPATH=\$/home/user/PL-kNN\$**
+```sh
+export PYTHONPATH=/home/user/PL-kNN
+```
 
 # Citation request
 
 By using this repo, you are accepting to cite the following paper in all publications that uses this source code:
 
 **Jodas, D.S., Passos, L.A., Papa, J.P. (2022, June 01–03). PL-kNN: A parameterless nearest neighbors classifier. [Paper presentation]. *IWSSIP 2022 - International Conference on Systems, Signals and Image Processing*, Sofia, Bulgaria. [http://iwssip.bg](http://iwssip.bg)**
+
+# Additional info
+
+Please, check the websites of the Recogna Laboratory to find more information about the work in progress in several domains of Machine Learning:
+
+Recogna Laboratory: [https://www.recogna.tech](https://www.recogna.tech) <br>
+
+# Contact
+
+If you have any further questions, please do not hesitate to contact us.
+
+| Author                    | E-mail                        |
+| ----------------------    | ----------------------        |
+| Danilo Samuel Jodas       | danilojodas@gmail.com         | <br>
+| João Paulo Papa           | joao.papa@unesp.br            | <br>
+| Leandro Aparecido Passos  | l.passosjunior@wlv.ac.uk      | <br>
+
