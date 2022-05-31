@@ -17,7 +17,7 @@ export PYTHONPATH=/home/user/PL-kNN
 
 # Citation request
 
-By using this repo, you are accepting to cite the following paper in all publications that uses this source code:
+By using this repo, you are accepting to cite the following paper in all publications that use this source code:
 
 **Jodas, D.S., Passos, L.A., Papa, J.P. (2022, June 01–03). PL-kNN: A parameterless nearest neighbors classifier. [Paper presentation]. *IWSSIP 2022 - International Conference on Systems, Signals and Image Processing*, Sofia, Bulgaria. [http://iwssip.bg](http://iwssip.bg)**
 
