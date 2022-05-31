@@ -1,6 +1,20 @@
 # PL-kNN
-This repository retains the source code of PL-kNN, a model proposed to avoid initializing the value of k of the standard k-NN classifier. The proposed model relies on the SMKNN presented by Ayyad et al., but with improvements on the class center calculation and the neighbors' determination considering the circle enclosing the test sample.
+Thank you for being so interested in our research. This repository contains the source code of PL-kNN, a model proposed to bypass the choice of the k parameter of the standard k-NN classifier. The proposed model is based on the Smallest Modified k-Nearest Neighbors (SMKNN) presented by Ayyad et al. in the following paper:
 
-The model seeks the nearest neighbors using a semicircle computed as the distance between the test sample under analysis and the nearest class center of the training samples. This approach is efficient when there is a mixing of instances of different classes.
+**Ayyad, S. M., Saleh, A. I., & Labib, L. M. (2019). Gene expression cancer classification using modified K-Nearest Neighbors technique. *Biosystems*, 176, 41-51.**
 
-# Citation
+Compared to the original SMKNN model, the proposed approach improves the class center calculation and the nearest neighbors' choice inside the circle enclosing the test sample. The model seeks the nearest neighbors using a semicircle computed as the distance between the test sample under analysis and the nearest class center of the training samples. This approach is efficient when there is a mixing of instances of different classes.
+
+# Usage
+
+Please, check the **example.py** file to see a simple example of how to use our method.
+
+If you want to use it in your source code, you have to set the PYTHONPATH variable to point to the folder where you cloned this repository. If you clone to **/home/user/PL-kNN**, you have to set the PYTHONPATH as follows:
+
+**export PYTHONPATH=\$/home/user/PL-kNN\$**
+
+# Citation request
+
+By using this repo, you are accepting to cite the following paper in all publications that uses this source code:
+
+**Jodas, D.S., Passos, L.A., Papa, J.P. (2022, June 01–03). PL-kNN: A parameterless nearest neighbors classifier. [Paper presentation]. *IWSSIP 2022 - International Conference on Systems, Signals and Image Processing*, Sofia, Bulgaria. [http://iwssip.bg](http://iwssip.bg)**
