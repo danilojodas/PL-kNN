@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>m_knn package &mdash; PL-kNN Documentation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=af2ce170"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pl_nn package" href="pl_nn.html" />
+    <link rel="prev" title="example module" href="example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PL-kNN Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">PL-kNN</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example.html">example module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">m_knn package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#m_knn.m_knn.MKNearestNeighbors"><code class="docutils literal notranslate"><span class="pre">MKNearestNeighbors</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#m_knn.m_knn.MKNearestNeighbors.fit"><code class="docutils literal notranslate"><span class="pre">MKNearestNeighbors.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#m_knn.m_knn.MKNearestNeighbors.mode"><code class="docutils literal notranslate"><span class="pre">MKNearestNeighbors.mode</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#m_knn.m_knn.MKNearestNeighbors.predict"><code class="docutils literal notranslate"><span class="pre">MKNearestNeighbors.predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pl_nn.html">pl_nn package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PL-kNN Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">PL-kNN</a></li>
+      <li class="breadcrumb-item active">m_knn package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/m_knn.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="m-knn-package">
+<h1>m_knn package<a class="headerlink" href="#m-knn-package" title="Permalink to this heading"></a></h1>
+<p>Package which contains the class implementation of the modified k-Nearest Neighbors.</p>
+<span class="target" id="module-m_knn.m_knn"></span><dl class="py class">
+<dt class="sig sig-object py" id="m_knn.m_knn.MKNearestNeighbors">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">m_knn.m_knn.</span></span><span class="sig-name descname"><span class="pre">MKNearestNeighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'smknn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/m_knn/m_knn.html#MKNearestNeighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#m_knn.m_knn.MKNearestNeighbors" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implements a k-Nearest Neighbor variant proposed for gene expression cancer classification.</p>
+<p>Please check the following paper to get further details regarding the method employed to implement this code:</p>
+<ol class="upperalpha simple" start="19">
+<li><ol class="upperalpha simple" start="13">
+<li><p>Ayyad, A. I. Saleh, and L. M. Labib, “Gene expression cancer classification using modified K-Nearest Neighbors technique,” BioSystems, vol. 176, pp. 41–51, 2019.</p></li>
+</ol>
+</li>
+</ol>
+<dl class="py method">
+<dt class="sig sig-object py" id="m_knn.m_knn.MKNearestNeighbors.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/m_knn/m_knn.html#MKNearestNeighbors.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#m_knn.m_knn.MKNearestNeighbors.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the center of the classes and the weights of the samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array</em>) – A MxN dimensional array with the samples of the training set.</p></li>
+<li><p><strong>y</strong> (<em>array</em>) – A Mx1 dimensional array with the labels of each sample in X.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="m_knn.m_knn.MKNearestNeighbors.mode">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#m_knn.m_knn.MKNearestNeighbors.mode" title="Permalink to this definition"></a></dt>
+<dd><p>Mode of the Modified k-NN.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="m_knn.m_knn.MKNearestNeighbors.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/m_knn/m_knn.html#MKNearestNeighbors.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#m_knn.m_knn.MKNearestNeighbors.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Predicts the labels of each sample in test set X.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>array</em>) – A MxN array with the samples of the test set.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Mx1 array with the predicted labels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-m_knn"></span></section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="example.html" class="btn btn-neutral float-left" title="example module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pl_nn.html" class="btn btn-neutral float-right" title="pl_nn package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Danilo Jodas, Leandro Passos, Joao Paulo Papa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

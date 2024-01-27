@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar  4 23:27:22 2020
-
-@author: DANILO
-"""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -64,7 +59,7 @@ class PlNearestNeighbors:
             pointC (array): A n-dimensional array that represents the ending point of (pointB,pointC).
 
         Returns:
-            angle (float): Angle in degrees.
+            float: Angle in degrees.
         """
         
         ba = pointA - pointB
@@ -86,7 +81,7 @@ class PlNearestNeighbors:
             check_same_idx (bool, optional): If True, the diagonal of the distance matrix is assigned zero. Defaults to True.
 
         Returns:
-            distances (array): A MxK array with the distance between each element from X to all elements of Y.
+            array: A MxK array with the distance between each element from X to all elements of Y.
         """
         
         distances = np.zeros((X.shape[0], Y.shape[0]))
@@ -112,7 +107,7 @@ class PlNearestNeighbors:
             X (array): A MxN dimensional array with the samples.
 
         Returns:
-            X (array): A 1xN dimensinal array that represents the center of the dataset.
+            array: A 1xN dimensinal array that represents the center of the dataset.
         """
 
         distances = self.__get_distances(X, X)
@@ -183,7 +178,7 @@ class PlNearestNeighbors:
             X (array): A MxN array with the samples of the test set.
 
         Returns:
-            y_pred (array): A Mx1 array with the predicted labels.
+            array: A Mx1 array with the predicted labels.
         """
 
         y_pred = []

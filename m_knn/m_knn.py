@@ -30,6 +30,19 @@ class MKNearestNeighbors:
         self.nearest_neighbors = None
         self.mode = mode
     
+    @property
+    def mode(self) -> str:
+        """Mode of the Modified k-NN.
+        """
+        return self.__mode
+
+    @mode.setter
+    def mode(self,mode : str) -> None:
+        if (mode!='smknn' and mode!='lmknn'):
+            raise Exception('Mode parameter must be smknn or lmknn')
+
+        self.__mode = mode
+    
     def __get_distances(self, X, Y, check_same_idx=True):
         """Computes the distance matrix from the samples in X and Y.
 
@@ -39,7 +52,7 @@ class MKNearestNeighbors:
             check_same_idx (bool, optional): If True, the diagonal of the distance matrix is assigned zero. Defaults to True.
 
         Returns:
-            distances (array): A MxK array with the distance between each element from X to all elements of Y.
+            array: A MxK array with the distance between each element from X to all elements of Y.
         """
         
         distances = np.zeros((X.shape[0], Y.shape[0]))
@@ -105,7 +118,7 @@ class MKNearestNeighbors:
             X (array): A MxN array with the samples of the test set.
 
         Returns:
-            y_pred (array): A Mx1 array with the predicted labels.
+            array: A Mx1 array with the predicted labels.
         """
 
         y_pred = []

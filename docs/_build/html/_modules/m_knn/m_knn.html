@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>m_knn.m_knn &mdash; PL-kNN Documentation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af2ce170"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PL-kNN Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">PL-kNN</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PL-kNN Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">m_knn.m_knn</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for m_knn.m_knn</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<div class="viewcode-block" id="MKNearestNeighbors"><a class="viewcode-back" href="../../m_knn.html#m_knn.m_knn.MKNearestNeighbors">[docs]</a><span class="k">class</span> <span class="nc">MKNearestNeighbors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a k-Nearest Neighbor variant proposed for gene expression cancer classification.</span>
+<span class="sd">    </span>
+<span class="sd">    Please check the following paper to get further details regarding the method employed to implement this code:</span>
+
+<span class="sd">    S. M. Ayyad, A. I. Saleh, and L. M. Labib, “Gene expression cancer classification using modified K-Nearest Neighbors technique,” BioSystems, vol. 176, pp. 41–51, 2019.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;smknn&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor to initialize the class properties.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mode (str, optional): Mode to get the nearest neighbors. Defaults to &#39;smknn&#39;.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: Thrown if the mode is different from &#39;smknn&#39; or &#39;lmknn&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span><span class="o">!=</span><span class="s1">&#39;smknn&#39;</span> <span class="ow">and</span> <span class="n">mode</span><span class="o">!=</span><span class="s1">&#39;lmknn&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Mode parameter must be smknn or lmknn&#39;</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mode of the Modified k-NN.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mode</span>
+
+    <span class="nd">@mode</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mode</span> <span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span><span class="o">!=</span><span class="s1">&#39;smknn&#39;</span> <span class="ow">and</span> <span class="n">mode</span><span class="o">!=</span><span class="s1">&#39;lmknn&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Mode parameter must be smknn or lmknn&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__mode</span> <span class="o">=</span> <span class="n">mode</span>
+    
+    <span class="k">def</span> <span class="nf">__get_distances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">check_same_idx</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes the distance matrix from the samples in X and Y.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (array): A MxN array.</span>
+<span class="sd">            Y (array): A KxZ array.</span>
+<span class="sd">            check_same_idx (bool, optional): If True, the diagonal of the distance matrix is assigned zero. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array: A MxK array with the distance between each element from X to all elements of Y.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">check_same_idx</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                
+                <span class="n">ed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>                
+                <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">ed</span>
+        
+        <span class="k">return</span> <span class="n">distances</span>
+            
+<div class="viewcode-block" id="MKNearestNeighbors.fit"><a class="viewcode-back" href="../../m_knn.html#m_knn.m_knn.MKNearestNeighbors.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes the center of the classes and the weights of the samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (array): A MxN dimensional array with the samples of the training set.</span>
+<span class="sd">            y (array): A Mx1 dimensional array with the labels of each sample in X.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        
+        <span class="c1"># Adding to more columns to the X_train array to store the labels (y) and the weights of each training sample to the center of the class, respectively</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">)),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">[:,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        
+        <span class="c1"># Auxiliary variables to store the classes and their respective centers</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">centers</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># Auxiliary variable to store the weigths of the samples (with respect to the class centers)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="o">==</span><span class="n">c</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">X_</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">indices</span><span class="p">,:]</span>
+            
+            <span class="c1"># Getting the center of the class</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">centers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
+            
+            <span class="c1"># Getting the weights of each sample</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">X_</span><span class="p">:</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">s</span><span class="o">-</span><span class="n">center</span><span class="p">)</span><span class="o">+</span><span class="mf">0.0001</span><span class="p">))</span>
+            
+            <span class="c1"># Adding the class weights to the last column of the X_train array</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">[</span><span class="n">indices</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">classes</span></div>
+    
+<div class="viewcode-block" id="MKNearestNeighbors.predict"><a class="viewcode-back" href="../../m_knn.html#m_knn.m_knn.MKNearestNeighbors.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predicts the labels of each sample in test set X.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (array): A MxN array with the samples of the test set.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array: A Mx1 array with the predicted labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">X</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            
+            <span class="c1"># Distance of the test sample to all centers of class</span>
+            <span class="n">distances_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_distances</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            
+            <span class="c1"># Distance of the test sample to all instances of the training set</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_distances</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            
+            <span class="c1"># Getting the distance of the test sample to the class centers</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">==</span><span class="s1">&#39;smknn&#39;</span><span class="p">):</span>
+                <span class="n">ed</span> <span class="o">=</span> <span class="n">distances_center</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">distances_center</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ed</span> <span class="o">=</span> <span class="n">distances_center</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">distances_center</span><span class="p">)]</span>
+            
+            <span class="c1"># Getting the nearest neighbors, i.e., all training instances whose distances are less than the distances</span>
+            <span class="n">idx_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">distances</span> <span class="o">&lt;=</span> <span class="n">ed</span><span class="p">)</span>
+            <span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">[</span><span class="n">idx_min</span><span class="p">]</span>
+            
+            <span class="c1"># Concatenating the distances of the test sample to the nearest neighbors of the training set</span>
+            <span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">nearest_neighbors</span><span class="p">,</span><span class="n">distances</span><span class="p">[</span><span class="n">idx_min</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                        
+            <span class="c1"># Determining the final class based on the nearest neighbors</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">final_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">distances_center</span><span class="p">)]</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="p">[:,</span><span class="o">-</span><span class="mi">3</span><span class="p">]))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">final_class</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="p">[:,</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Finding the classes of the nearest neighbors                </span>
+                <span class="n">cl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="p">[:,</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">classes</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+                
+                <span class="c1"># Weighted sum considering the considering the distances and weights of the training instances</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nearest_neighbors</span><span class="p">:</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="n">classes</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">+=</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">n</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                
+                <span class="n">final_class</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">classes</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+            
+            <span class="n">y_pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_class</span><span class="p">)</span>
+        
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y_pred</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Danilo Jodas, Leandro Passos, Joao Paulo Papa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
