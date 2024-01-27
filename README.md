@@ -19,7 +19,18 @@ export PYTHONPATH=/home/user/PL-kNN
 
 By using this repo, you are accepting to cite the following paper in all publications that use this source code:
 
-**Jodas, D.S., Passos, L.A., Papa, J.P. (2022, June 01–03). PL-kNN: A parameterless nearest neighbors classifier. [Paper presentation]. *IWSSIP 2022 - International Conference on Systems, Signals and Image Processing*, Sofia, Bulgaria. [http://iwssip.bg](http://iwssip.bg)**
+**Jodas, D. S., Passos, L. A., Adeel, A., & Papa, J. P. (2022, June). PL-k NN: A Parameterless Nearest Neighbors Classifier. In *2022 29th International Conference on Systems, Signals and Image Processing (IWSSIP)* (pp. 1-4). IEEE.**
+
+```
+@inproceedings{jodas2022pl,
+  title={PL-k NN: A Parameterless Nearest Neighbors Classifier},
+  author={Jodas, Danilo Samuel and Passos, Leandro Aparecido and Adeel, Ahsan and Papa, Jo{\~a}o Paulo},
+  booktitle={2022 29th International Conference on Systems, Signals and Image Processing (IWSSIP)},
+  pages={1--4},
+  year={2022},
+  organization={IEEE}
+}
+```
 
 # Additional info
 
