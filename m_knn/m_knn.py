@@ -3,7 +3,22 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 
 class MKNearestNeighbors:
+    """Implements a k-Nearest Neighbor variant proposed for gene expression cancer classification.
+    
+    Please check the following paper to get further details regarding the method employed to implement this code:
+
+    S. M. Ayyad, A. I. Saleh, and L. M. Labib, “Gene expression cancer classification using modified K-Nearest Neighbors technique,” BioSystems, vol. 176, pp. 41–51, 2019.
+    """
+
     def __init__(self,mode='smknn'):
+        """Constructor to initialize the class properties.
+
+        Args:
+            mode (str, optional): Mode to get the nearest neighbors. Defaults to 'smknn'.
+
+        Raises:
+            Exception: Thrown if the mode is different from 'smknn' or 'lmknn'
+        """
         if (mode!='smknn' and mode!='lmknn'):
             raise Exception('Mode parameter must be smknn or lmknn')
             
@@ -16,25 +31,16 @@ class MKNearestNeighbors:
         self.mode = mode
     
     def __get_distances(self, X, Y, check_same_idx=True):
-        '''
-        Function that computes the distance matrix from the samples in X and Y.
+        """Computes the distance matrix from the samples in X and Y.
 
-        Parameters
-        ----------
-        X : array
-            A MxN array.
-        Y : array
-            A KxZ array.
-        check_same_idx : bool, optional
-            It indicates whether to ignore the distance of the elements in the same index in X and Y.
-            If True, diagonal of the distance matrix is assigned zero. The default is True.
+        Args:
+            X (array): A MxN array.
+            Y (array): A KxZ array.
+            check_same_idx (bool, optional): If True, the diagonal of the distance matrix is assigned zero. Defaults to True.
 
-        Returns
-        -------
-        distances : array
-            A MxK array with the distance between each element from X to all elements of Y.
-
-        '''
+        Returns:
+            distances (array): A MxK array with the distance between each element from X to all elements of Y.
+        """
         
         distances = np.zeros((X.shape[0], Y.shape[0]))
         
@@ -50,20 +56,15 @@ class MKNearestNeighbors:
         return distances
             
     def fit(self, X, y):
-        '''
-        Function that computes the center of the classes and the weights of the samples.
+        """Computes the center of the classes and the weights of the samples.
 
-        Parameters
-        ----------
-        X : array
-            A MxN dimensional array with the samples of the training set.
-        y : array
-            A Mx1 dimensional array with the labels of each sample in X.
-
-        Returns
-        -------
-        None.
-        '''
+        Args:
+            X (array): A MxN dimensional array with the samples of the training set.
+            y (array): A Mx1 dimensional array with the labels of each sample in X.
+        
+        Returns:
+            None
+        """
         
         self.X_train = np.copy(X)
         
@@ -98,19 +99,15 @@ class MKNearestNeighbors:
         self.classes = classes
     
     def predict(self, X):
-        '''
-        Function that predicts the labels of each sample in test set X.
+        """Predicts the labels of each sample in test set X.
 
-        Parameters
-        ----------
-        X : array
-            A MxN array with the samples of the test set.
+        Args:
+            X (array): A MxN array with the samples of the test set.
 
-        Returns
-        -------
-        y_pred : array
-            a Mx1 array with the predicted labels.
-        '''
+        Returns:
+            y_pred (array): A Mx1 array with the predicted labels.
+        """
+
         y_pred = []
         
         for t in X:

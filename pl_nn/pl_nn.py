@@ -24,7 +24,19 @@ X,y = make_classification(n_samples=50,
 '''
 
 class PlNearestNeighbors:
+    """Class that implements the parameterless version of the k-Nearest Neighbors algorithm.
+    """
+
     def __init__(self):
+        """Constructor for property initialization.
+        
+        Args:
+            None.
+        
+        Returns:
+            None.
+        """
+
         self.X_train = None
         self.y_train = None
         self.classes = None
@@ -33,34 +45,27 @@ class PlNearestNeighbors:
         self.nearest_neighbors = None
         
     def __get_angle_between_three_points(self, pointA, pointB, pointC):
-        '''
-        Function that calculates the angle between three points.
+        """Computes the angle between three points.
+
           A
           |
           |
           |_
         B |.|___________C
-        
+
         theta((pointB,pointA),(pointB,pointC)
         
         Code adapted from:
-        https://manivannan-ai.medium.com/find-the-angle-between-three-points-from-2d-using-python-348c513e2cd
-    
-        Parameters
-        ----------
-        pointA : array
-            A n-dimensional array that represents the ending point of (pointB,pointA).
-        pointB : array
-            A n-dimensional array that represents the reference point of the angle between the two vectors.
-        pointC : array
-            A n-dimensional array that represents the ending point of (pointB,pointC).
-    
-        Returns
-        -------
-        float
-            Angle in degrees.
-    
-        '''
+        https://manivannan-ai.medium.com/find-the-angle-between-three-points-from-2d-using-python-348c513e2cd        
+
+        Args:
+            pointA (array): A n-dimensional array that represents the ending point of (pointB,pointA).
+            pointB (array): A n-dimensional array that represents the reference point of the angle between the two vectors.
+            pointC (array): A n-dimensional array that represents the ending point of (pointB,pointC).
+
+        Returns:
+            angle (float): Angle in degrees.
+        """
         
         ba = pointA - pointB
         bc = pointC - pointB
@@ -73,25 +78,16 @@ class PlNearestNeighbors:
         return np.degrees(cosine_angle)
     
     def __get_distances(self, X, Y, check_same_idx=True):
-        '''
-        Function that computes the distance matrix from the samples in X and Y.
+        """Function that computes the distance matrix from the samples in X and Y.
 
-        Parameters
-        ----------
-        X : array
-            A MxN array.
-        Y : array
-            A KxZ array.
-        check_same_idx : bool, optional
-            It indicates whether to ignore the distance of the elements in the same index in X and Y.
-            If True, diagonal of the distance matrix is assigned zero. The default is True.
+        Args:
+            X (array): A MxN array.
+            Y (array): A KxZ array.
+            check_same_idx (bool, optional): If True, the diagonal of the distance matrix is assigned zero. Defaults to True.
 
-        Returns
-        -------
-        distances : array
-            A MxK array with the distance between each element from X to all elements of Y.
-
-        '''
+        Returns:
+            distances (array): A MxK array with the distance between each element from X to all elements of Y.
+        """
         
         distances = np.zeros((X.shape[0], Y.shape[0]))
         
@@ -108,21 +104,17 @@ class PlNearestNeighbors:
         return distances
     
     def __get_geometric_median(self, X):
-        '''
-        Function that seeks for the sample whose distance to all the others in dataset is the lowest.
+        """Seeks the sample whose distance to all the others in dataset is the lowest.
+        
         The sample is considered to be center of the instances in the dataset.
 
-        Parameters
-        ----------
-        X : array
-            A MxN dimensional array with the samples.
+        Args:
+            X (array): A MxN dimensional array with the samples.
 
-        Returns
-        -------
-        center : array
-            A 1xN dimensinal array that represents the center of the dataset.
+        Returns:
+            X (array): A 1xN dimensinal array that represents the center of the dataset.
+        """
 
-        '''
         distances = self.__get_distances(X, X)
         
         min_dist = np.sum(distances[0])
@@ -136,20 +128,15 @@ class PlNearestNeighbors:
         return X[idx]
             
     def fit(self, X, y):
-        '''
-        Function that computes the center of the classes and the weights of the samples.
+        """Computes the center of the classes and the weights of the samples.
 
-        Parameters
-        ----------
-        X : array
-            A MxN dimensional array with the samples of the training set.
-        y : array
-            A Mx1 dimensional array with the labels of each sample in X.
-
-        Returns
-        -------
-        None.
-        '''
+        Args:
+            X (array): A MxN dimensional array with the samples of the training set.
+            y (array): A Mx1 dimensional array with the labels of each sample in X.
+        
+        Returns:
+            None
+        """
         
         self.X_train = np.copy(X)
         
@@ -190,19 +177,15 @@ class PlNearestNeighbors:
         self.classes = classes
     
     def predict(self, X):
-        '''
-        Function that predicts the labels of each sample in test set X.
+        """Predicts the labels of each sample in test set X.
 
-        Parameters
-        ----------
-        X : array
-            A MxN array with the samples of the test set.
+        Args:
+            X (array): A MxN array with the samples of the test set.
 
-        Returns
-        -------
-        y_pred : array
-            a Mx1 array with the predicted labels.
-        '''
+        Returns:
+            y_pred (array): A Mx1 array with the predicted labels.
+        """
+
         y_pred = []
         
         i = 0
@@ -261,23 +244,17 @@ class PlNearestNeighbors:
         return y_pred
     
     def plot_neighbors(self,sample):
-        '''
-        Function designed to visualize the nearest neighbors selected for the test sample.
+        """Function designed to visualize the nearest neighbors selected for the test sample.
 
-        Parameters
-        ----------
-        sample : array
-            A 2D array with the values of the test sample.
+        Args:
+            sample (array): A 2D array with the values of the test sample.
 
-        Raises
-        ------
-        SystemExit
-            Thrown if the model was not trained yet.
-
-        Returns
-        -------
-        None.
-        '''
+        Raises:
+            SystemExit: Thrown if the model was not trained yet.
+        
+        Returns:
+            None.
+        """
         
         if (self.centers is None):
             raise SystemExit('The model was not fitted yet!')
