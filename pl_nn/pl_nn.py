@@ -6,6 +6,8 @@ Created on Wed Mar  4 23:27:22 2020
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -257,3 +259,85 @@ class PlNearestNeighbors:
         
         y_pred = np.vstack(y_pred)
         return y_pred
+    
+    def plot_neighbors(self,sample):
+        '''
+        Function designed to visualize the nearest neighbors selected for the test sample.
+
+        Parameters
+        ----------
+        sample : array
+            A 2D array with the values of the test sample.
+
+        Raises
+        ------
+        SystemExit
+            Thrown if the model was not trained yet.
+
+        Returns
+        -------
+        None.
+        '''
+        
+        if (self.centers is None):
+            raise SystemExit('The model was not fitted yet!')
+        
+        sample = np.expand_dims(sample,axis=0)
+        X_train = self.X_train[:,:-2]
+        y_train = self.X_train[:,-2]
+        
+        # Applying PCA to reduce dimensionality
+        pca = PCA(n_components=2)
+        pca.fit(X_train)
+        X_train = pca.fit_transform(X_train)
+        sample = pca.transform(sample)
+        centers = pca.transform(self.centers)
+        
+        # Distance of the test sample to all centers of class
+        distances_center = self.__get_distances(sample,centers,False).flatten()
+        
+        # Class center with the minimum distance to the test sample
+        #center_min = self.centers[np.argmin(distances_center)]
+        center_min = centers[np.argmin(distances_center)]
+        
+        # Distance of the test sample to all instances of the training set
+        distances = self.__get_distances(sample,X_train,False).flatten()
+        
+        # Getting the minimum distance (test sample to the class centers)
+        ed = distances_center[np.argmin(distances_center)]
+        
+        # Getting the nearest neighbors, i.e., all training instances whose distances are less than the distances
+        idx_min = np.where(distances <= ed)
+        #nearest_neighbors = self.X_train[idx_min]
+        nearest_neighbors = X_train[idx_min]
+        
+        # Calculating the angle between the test sample and the nearest neighbors in the PCA space
+        angles = []
+        for n in nearest_neighbors:
+            angles.append(self.__get_angle_between_three_points(center_min, sample[0], n))
+        
+        angles = np.nan_to_num(angles)
+
+        # Concatenating the distances of the test sample to the nearest neighbors of the training set
+        nearest_neighbors = np.concatenate((nearest_neighbors,distances[idx_min].reshape(-1,1)),axis=1)
+        
+        # Getting the neighbors inside the semi-circle
+        nearest_neighbors = nearest_neighbors[np.abs(angles) <= 90]
+        
+        # Plot the nearest center and neighbors inside the semi-circle
+        fig, ax = plt.subplots()
+        # Plot the samples of the training set
+        for i in range(len(np.unique(y_train))):
+            ax.scatter(X_train[y_train==i,0],X_train[y_train==i,1],label=i)
+        
+        # Plot the test sample
+        ax.scatter(sample[:,0],sample[:,1],c='k')
+        
+        # Plot the nearest neighbors inside the semi-circle
+        ax.scatter(nearest_neighbors[:,0],nearest_neighbors[:,1],color=[],edgecolors='k')        
+        # Plot the nearest center
+        ax.scatter(center_min[0],center_min[1],edgecolors='k')
+        
+        # Draw the representation of the circle
+        cir = plt.Circle((sample[:,0], sample[:,1]), ed, color='k',fill=False,linestyle='--')
+        ax.add_patch(cir)
